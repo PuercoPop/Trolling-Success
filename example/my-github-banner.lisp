@@ -1,8 +1,7 @@
-(ql:quickload :cl-github)
 (ql:quickload :trolling-success)
+(in-package :trolling-success)
 
-;; Configure
-
-(let ((cursor (new-github-cursor "metrics" github-name githubapi))
-      (message "Succeeding at success through metrics."))
+(let ((cursor (new-github-cursor))
+      (message "SUCCEEDING AT SUCCESS THROUGH METRICS."))
+  (git-init)
   (trolling-success:write-to-canvas cursor message))

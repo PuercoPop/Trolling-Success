@@ -20,6 +20,6 @@
   (run-shell-command
    (format nil
            "git commit --date=\"~A\" -m \"~A\""
-           (format-timestring date :format +iso-8601-format+)
+           (format-timestring nil date :format +iso-8601-format+)
            (random-elt +git-commit-messages+))))
 
