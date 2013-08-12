@@ -1,3 +1,4 @@
 (defpackage :trolling-success
   (:use :cl :local-time)
-  (:nicknames "SaS"))
+  (:nicknames "SaS")
+  (:import-from :asdf :run-shell-command))

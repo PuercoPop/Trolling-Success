@@ -18,3 +18,8 @@
   (if (eq 0 (timestamp-day-of-week date))
       date
       (next-sunday (timestamp+ date 1 :day))))
+
+(defun random-elt (list)
+  "Return a random element from the list."
+  (elt list
+       (random (length list))))
