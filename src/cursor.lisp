@@ -83,13 +83,12 @@
   (:documentation "Draw to the the pixels of each bar at the cursor position."))
 
 (defgeneric letter-to-bars (character)
-  (:method-combination append)
   (:documentation "Translate a letter to a list of bars which in
   conjunction with a cursor can later be translated to a position."))
 
-(defmethod letter-to-bars :after (character)
-  (list
-   (new-github-bar)))
+(defmethod letter-to-bars :around (character)
+  (let ((result (call-next-method)))
+    (append result (list (new-github-bar)))))
 
 (defmethod draw-bar ((cursor github-cursor) (bar github-bar))
   "Transform to dates and run the git commmit command."
