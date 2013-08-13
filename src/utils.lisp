@@ -1,8 +1,9 @@
 (in-package :trolling-success)
 ;; 2013-05-14 18:42:26 -0500
 ;; git commit --date="Wed Feb 16 14:00 2011 +0100"
+(defparameter +default-origin+ (timestamp- (now) 1 :year))
 
-(defun calculate-position (x y &optional (date (now)))
+(defun calculate-position (x y &optional (date +default-origin+))
   "Return the date that represents given position for a given date. If
   no date is given use the current date. For every x add 7 days; for
   every y 1 day."

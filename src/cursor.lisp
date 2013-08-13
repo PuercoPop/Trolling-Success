@@ -12,7 +12,8 @@
   ((github-login :initarg :login :reader login)
    (github-token :initarg :token :reader token
                  :documentation "github's API key.")
-   (d :initform (now) :reader origin-date :allocation :class))
+   (d :initform +default-origin+
+      :reader origin-date :allocation :class))
   (:documentation "Uses github's collaboration as a canvas."))
 
 (defun new-github-cursor ()
@@ -82,8 +83,13 @@
   (:documentation "Draw to the the pixels of each bar at the cursor position."))
 
 (defgeneric letter-to-bars (character)
+  (:method-combination append)
   (:documentation "Translate a letter to a list of bars which in
   conjunction with a cursor can later be translated to a position."))
+
+(defmethod letter-to-bars :after (character)
+  (list
+   (new-github-bar)))
 
 (defmethod draw-bar ((cursor github-cursor) (bar github-bar))
   "Transform to dates and run the git commmit command."
