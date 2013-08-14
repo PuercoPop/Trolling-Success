@@ -13,8 +13,7 @@
 
 (defun git-remove ()
   (run-shell-command "rm -r .git < /usr/bin/yes")
-  (run-shell-command "rm -r quotes")
-  )
+  (run-shell-command "rm -r quotes"))
 
 (defun git-commit (date)
   "Create a commit using the date and a random commit message."
@@ -23,7 +22,13 @@
   (run-shell-command "git add quotes")
 
   (run-shell-command
-   (format nil
-           "git commit --date=\"~A\" -m \"~A\""
-           (format-timestring nil date :format +iso-8601-format+)
-           (random-elt +git-commit-messages+))))
+   (concatenate 'string
+                (format nil
+                        "git commit --date=\"~A\" -m \"~A\""
+                        (format-timestring nil date :format +iso-8601-format+)
+                        (random-elt +git-commit-messages+))
+                (if (and (boundp '*git-author*)
+                         (boundp '*git-email*))
+                    (format nil " --author=\"~A <~A>\""
+                            *git-author* *git-email*)
+                    ""))))
