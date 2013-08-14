@@ -11,6 +11,11 @@
   "Initialize a git repo."
   (run-shell-command "git init"))
 
+(defun git-remove ()
+  (run-shell-command "rm -r .git < /usr/bin/yes")
+  (run-shell-command "rm -r quotes")
+  )
+
 (defun git-commit (date)
   "Create a commit using the date and a random commit message."
   (run-shell-command "fortune >> quotes")
@@ -22,4 +27,3 @@
            "git commit --date=\"~A\" -m \"~A\""
            (format-timestring nil date :format +iso-8601-format+)
            (random-elt +git-commit-messages+))))
-

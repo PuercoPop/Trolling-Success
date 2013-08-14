@@ -116,8 +116,10 @@
   cursor)
 
 (defun write-to-canvas (cursor message)
+  (git-remove)
+  (git-init)
   (loop for letter across message
      do
        (loop for bar in (letter-to-bars letter)
-            do
+          do
             (draw-bar cursor bar))))
