@@ -86,10 +86,6 @@
   (:documentation "Translate a letter to a list of bars which in
   conjunction with a cursor can later be translated to a position."))
 
-(defmethod letter-to-bars :around (character)
-  (let ((result (call-next-method)))
-    (append result (list (new-github-bar)))))
-
 (defmethod draw-bar ((cursor github-cursor) (bar github-bar))
   "Transform to dates and run the git commmit command."
   ;; git commit --date="Wed Feb 16 14:00 2011 +0100"
