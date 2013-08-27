@@ -4,3 +4,7 @@
   (:import-from :asdf :run-shell-command)
   (:export
    #:write-to-canvas))
+
+(defpackage game-of-life
+  (:use :cl)
+  (:nicknames "gom"))
