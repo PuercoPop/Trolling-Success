@@ -12,15 +12,15 @@
 
 (defun step (world)
   (loop
-     for index below (array-total-size  *world*)
-     for cell = (row-major-aref *world* index)
+     for index below (array-total-size world)
+     for cell = (row-major-aref world index)
      do
        (when (alive? cell)
-         (case (count (get-live-neighbours index *world*))
+         (case (length (get-live-neighbours index world))
            ((2 3) (setf cell 1))
            (otherwise (setf cell 0))))
        (when (dead? cell)
-         (case (count (get-live-neighbours index *world*))
+         (case (length (get-live-neighbours index world))
            (3 (setf cell 1))
            (otherwise (setf cell 0))))))
 
@@ -37,10 +37,7 @@
 
 (defun get-neighbours (index array)
   (loop for pair in (get-neighbouring-positions index)
-     collect (aref world (first pair) (second pair))))
-
-(destructuring-bind (x y) '(1 2)
-  y)
+     collect (aref array (first pair) (second pair))))
 
 (defun get-neighbouring-positions (index)
   (remove-if #'pair-out-of-bounds
@@ -65,5 +62,18 @@
   (let ((row (floor (/ index *world-width*))))
     (list (- index (* row *world-width*))  row)))
 
+(defun end-of-column (index)
+  (multiple-value-bind
+        (quotient remainder) (floor (/ (1+ index) *world-width*))
+    (declare (ignore quotient))
+    (eq 0 remainder)))
 
-(defun print-world (world))
+(defun print-world (world)
+  (format t "~%")
+  (loop
+     for index below (array-total-size world)
+     for cell = (row-major-aref world index)
+     do
+       (format t " ~A " cell)
+       (when (end-of-column index)
+         (format t "~%"))))
