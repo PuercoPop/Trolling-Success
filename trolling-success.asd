@@ -2,9 +2,10 @@
 
 (asdf:defsystem :trolling-success
   :description "Draw to github's contribution graph as it were a grid."
-  :version (:read-file-form "version.lisp-expr")
+  :version (:read-file-form "version.num")
   :serial t
-  :depends-on (:local-time)
+  :depends-on (:local-time
+               :alexandria)
   :license "<3"
   :pathname "src"
   :components ((:file "packages")
@@ -12,4 +13,5 @@
                (:file "git")
                (:file "grid")
                (:file "alphabet")
-               (:file "cursor")))
+               (:file "cursor")
+               (:file "game-of-life")))
