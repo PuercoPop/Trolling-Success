@@ -1,11 +1,24 @@
 (defpackage #:game-of-life
   (:use :cl)
   (:import-from #:alexandria #:copy-array)
+  (:import-from #:conspack #:encode #:decode)
+  (:import-from #:fast-io
+                #:fast-read-byte
+                #:with-fast-output
+                #:fast-write-sequence
+                #:make-octet-vector
+                #:make-input-buffer
+                #:octet)
   (:nicknames #:gom)
   (:export
    #:step-world
    #:make-world
-   #:print-world))
+   #:print-world
+   #:save-world
+   #:load-world
+   #:*world*
+   #:*world-height*
+   #:*world-width*))
 
 (in-package :game-of-life)
 
@@ -104,6 +117,57 @@
         (quotient remainder) (floor (/ (1+ index) *world-width*))
     (declare (ignore quotient))
     (eq 0 remainder)))
+
+;; Serialization 'structure'
+;;
+;; `((world . ,*world*)
+;;   (world-height . ,*world-height*)
+;;   (world-width . ,*world-width*))
+
+(defun save-world (filename)
+  "Serialize the world state to filename. Filename should be an absolute
+  pathname."
+  (let* ((state (acons 'world *world*
+                       (acons 'world-height *world-height*
+                              (acons 'world-width *world-width* nil))))
+         (encoded-state (encode state)))
+    (with-open-file (out filename
+                        :direction :output
+                        :element-type '(unsigned-byte 8)
+                        :if-exists :supersede)
+      (with-fast-output (buf out)
+        (fast-write-sequence encoded-state buf)))
+    (values state encoded-state)))
+
+(defun ensure-octet-vector (vector)
+  "Make sure we are dealing with a simple-array of (unsigned-byte 8) as
+conspack expects."
+  (let* ((vec-length (length vector))
+         (out (make-octet-vector vec-length)))
+    (loop
+      :for index :below vec-length
+      :do
+         (setf (aref out index) (aref vector index)))
+    out))
+
+(defun load-world (filename)
+  "Load the global state from filename. The filename must be absolute."
+  (with-open-file (in filename
+                      :direction :input
+                      :element-type '(unsigned-byte 8))
+    (let ((buf (make-input-buffer :stream in))
+          (vec (make-array 1 :element-type 'octet
+                             :fill-pointer 0
+                             :adjustable t)))
+      (loop
+        :for octet := (fast-read-byte buf nil 'eof)
+        :until (eq octet 'eof)
+        :do (vector-push-extend octet vec))
+      (let ((decoded-state (decode (ensure-octet-vector vec))))
+        (setf *world* (cdr (assoc 'world decoded-state))
+              *world-height* (cdr (assoc 'world-height decoded-state))
+              *world-width* (cdr (assoc 'world-width decoded-state)))
+        decoded-state))))
 
 (defun print-world (world)
   "Print a grid representing the world. 1 is a live cell, 0 a dead one. "
