@@ -4,8 +4,7 @@
   :description "Draw to github's contribution graph as it were a grid."
   :version (:read-file-form "version.num")
   :serial t
-  :depends-on (:local-time
-               :alexandria)
+  :depends-on (:local-time)
   :license "<3"
   :pathname "src"
   :components ((:file "packages")
@@ -13,5 +12,13 @@
                (:file "git")
                (:file "grid")
                (:file "alphabet")
-               (:file "cursor")
-               (:file "game-of-life")))
+               (:file "cursor")))
+
+(asdf:defsystem :game-of-life
+  :description "Draw to github's contribution graph as it were a grid."
+  :version (:read-file-form "version.num")
+  :serial t
+  :depends-on (:alexandria)
+  :license "<3"
+  :pathname "src"
+  :components ((:file "game-of-life")))
