@@ -30,6 +30,7 @@
        (setf (aref *world* (pair->index pair)) 1))
   *world*)
 
+;; TODO: Make the borders 'infinite'
 (defun step-world (world)
   (let ((new-world (copy-array world)))
     (loop

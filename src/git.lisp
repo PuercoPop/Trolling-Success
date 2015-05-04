@@ -5,13 +5,15 @@
                                       "I'm in yur commits eating yur code."
                                       "Can I haz cheese plz?"
                                       "We shall overcome."
-                                      "Shut up and take my money!"))
+                                      "Shut up and take my money!")
+  "Some funny quotes to put in the commit message.")
 
 (defun git-init ()
   "Initialize a git repo."
   (run-shell-command "git init"))
 
 (defun git-remove ()
+  "Remove the git repo of the current working directory."
   (run-shell-command "rm -r .git < /usr/bin/yes")
   (run-shell-command "rm -r quotes"))
 

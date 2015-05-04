@@ -44,11 +44,7 @@
   (:documentation "Provides alias for day to y coordinate."))
 
 (defun new-github-bar (&rest args)
-  (apply #'make-instance (interleave (list 'github-bar) args (make-list (length args) :initial-element t)))
-  )
-
-(new-github-bar :tuesday :wednesday)
-(make-instance 'github-bar :tuesday t :wednesday t)
+  (apply #'make-instance (interleave (list 'github-bar) args (make-list (length args) :initial-element t))))
 
 (defmethod sunday ((bar github-bar))
   (when (pixel-0 bar)
@@ -62,7 +58,7 @@
   (when (pixel-2 bar)
     2))
 
-(defmethod wednesday((bar github-bar))
+(defmethod wednesday ((bar github-bar))
   (when (pixel-3 bar)
     3))
 
@@ -83,8 +79,8 @@
   (:documentation "Draw to the the pixels of each bar at the cursor position."))
 
 (defgeneric letter-to-bars (character)
-  (:documentation "Translate a letter to a list of bars which in
-  conjunction with a cursor can later be translated to a position."))
+  (:documentation "Translate a letter to a list of bars which in conjunction
+  with a cursor can later be translated to a position."))
 
 (defmethod draw-bar ((cursor github-cursor) (bar github-bar))
   "Transform to dates and run the git commmit command."
@@ -118,8 +114,10 @@
 (defun write-to-canvas (cursor message)
   (git-remove)
   (git-init)
-  (loop for letter across message
-     do
-       (loop for bar in (letter-to-bars letter)
-          do
+  (loop
+    :for letter :across message
+    :do
+       (loop
+         :for bar :in (letter-to-bars letter)
+         :do
             (draw-bar cursor bar))))

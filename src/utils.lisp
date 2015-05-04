@@ -14,7 +14,7 @@
 
 (defun next-sunday (date)
   ""
-  (if (eq 0 (timestamp-day-of-week date))
+  (if (zerop (timestamp-day-of-week date))
       date
       (next-sunday (timestamp+ date 1 :day))))
 
