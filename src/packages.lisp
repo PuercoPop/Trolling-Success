@@ -1,6 +1,6 @@
 (defpackage :trolling-success
   (:use :cl :local-time)
   (:nicknames "SaS")
-  (:import-from :asdf :run-shell-command)
+  (:import-from :uiop :run-program)
   (:export
    #:write-to-canvas))
