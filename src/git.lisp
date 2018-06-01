@@ -10,20 +10,20 @@
 
 (defun git-init ()
   "Initialize a git repo."
-  (run-shell-command "git init"))
+  (run-program "git init"))
 
 (defun git-remove ()
   "Remove the git repo of the current working directory."
-  (run-shell-command "rm -r .git < /usr/bin/yes")
-  (run-shell-command "rm -r quotes"))
+  (run-program "rm -r .git < /usr/bin/yes")
+  (run-program "rm -r quotes"))
 
 (defun git-commit (date)
   "Create a commit using the date and a random commit message."
-  (run-shell-command "fortune >> quotes")
+  (run-program "fortune >> quotes")
 
-  (run-shell-command "git add quotes")
+  (run-program "git add quotes")
 
-  (run-shell-command
+  (run-program
    (concatenate 'string
                 (format nil
                         "git commit --date=\"~A\" -m \"~A\""
